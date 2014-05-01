@@ -27,26 +27,26 @@ struct Option {
    OptionSet<OPTIONGROUP> operator+(Option<OPTIONGROUP> one) const;
 };
 
-// Combining options into an OptionSet.
-// This doesn't work, see examples in main.cpp.
-template <typename OPTIONKIND>
-OptionSet<OPTIONKIND> operator+(const Option<OPTIONKIND>& one, const Option<OPTIONKIND>& two);
-
-
 // A set of options
-static const struct SomeOptions_t {
-   SomeOptions_t() {}
-   typedef Option<SomeOptions_t> Option_t;
+template <typename DERIVEDKIND>
+struct SomeOptionsBase_t {
+   SomeOptionsBase_t() {}
+   typedef const Option<DERIVEDKIND> Option_t;
 
    Option_t Option1 = "Option1";
    Option_t Option2 = "Option2";
    Option_t Option3 = "Option3";
+};
+
+// The actual incarnation of SomeOptions
+static const struct SomeOptions_t: public SomeOptionsBase_t<SomeOptions_t> {
+   SomeOptions_t() {}
 } SomeOptions;
 
-// A derived set of options
-static const struct DerivedOptions_t: public SomeOptions_t {
+// A derived set of options; reuses SomeOptionsBase_t but cannot convert
+// to SomeOptions_t
+static const struct DerivedOptions_t: public SomeOptionsBase_t<DerivedOptions_t> {
    DerivedOptions_t() {}
-   typedef Option<DerivedOptions_t> Option_t;
 
    Option_t Option1D = "Option1D";
    Option_t Option2D = "Option2D";
@@ -54,9 +54,8 @@ static const struct DerivedOptions_t: public SomeOptions_t {
 } DerivedOptions;
 
 // An unrelated set of options
-static const struct DifferentOptions_t: public SomeOptions_t {
+static const struct DifferentOptions_t: public SomeOptionsBase_t<DifferentOptions_t> {
    DifferentOptions_t() {}
-   typedef Option<DifferentOptions_t> Option_t;
    
    Option_t Option1DD = "Option1DD";
    Option_t Option2DD = "Option2DD";
