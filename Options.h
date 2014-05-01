@@ -27,39 +27,36 @@ struct Option {
    OptionSet<OPTIONGROUP> operator+(Option<OPTIONGROUP> one) const;
 };
 
-// A set of options
+// ------- Actual Option Definitions, e.g. in ROOT/Histogram.hxx --------
+
+// A set of generic histogram options
 template <typename DERIVEDKIND>
-struct SomeOptionsBase_t {
-   SomeOptionsBase_t() {}
+struct HistOptBase_t {
+   HistOptBase_t() {}
    typedef const Option<DERIVEDKIND> Option_t;
 
-   Option_t Option1 = "Option1";
-   Option_t Option2 = "Option2";
-   Option_t Option3 = "Option3";
+   Option_t Same       = "SAME"; //<- Superimpose on previous picture in the same pad.
+   Option_t XAxisOnTop = "X+"; //<- The X-axis is drawn on the top side of the plot.
+   Option_t Errors     = "E"; //<- Draw error bars.
 };
 
-// The actual incarnation of SomeOptions
-static const struct SomeOptions_t: public SomeOptionsBase_t<SomeOptions_t> {
-   SomeOptions_t() {}
-} SomeOptions;
+// 1D histogram options
+static const struct Hist1DOpt_t: public HistOptBase_t<Hist1DOpt_t> {
+   Hist1DOpt_t() {}
+   
+   Option_t Bar    = "B"; //<- Bar chart option.
+   Option_t Bar3D  = "BAR"; //<- Like option "B", but bars can be drawn with a 3D effect.
+   Option_t ErrorT = "E1"; //<- Draw error bars with perpendicular lines at the edges.
+} Hist1DOpt;
 
 // A derived set of options; reuses SomeOptionsBase_t but cannot convert
 // to SomeOptions_t
-static const struct DerivedOptions_t: public SomeOptionsBase_t<DerivedOptions_t> {
-   DerivedOptions_t() {}
+static const struct Hist2DOpt_t: public HistOptBase_t<Hist2DOpt_t> {
+   Hist2DOpt_t() {}
 
-   Option_t Option1D = "Option1D";
-   Option_t Option2D = "Option2D";
-   Option_t Option3D = "Option3D";
-} DerivedOptions;
-
-// An unrelated set of options
-static const struct DifferentOptions_t: public SomeOptionsBase_t<DifferentOptions_t> {
-   DifferentOptions_t() {}
-   
-   Option_t Option1DD = "Option1DD";
-   Option_t Option2DD = "Option2DD";
-   Option_t Option3DD = "Option3DD";
-} DifferentOptions;
+   Option_t Box = "BOX"; //<- A box is drawn for each cell with surface proportional to the content's absolute value. A negative content is marked with a X.
+   Option_t Arrow = "ARR"; //<- Arrow mode. Shows gradient between adjacent cells.
+   Option_t ContourSurfaceColor = "CONT0"; //<- Draw a contour plot using surface colors to distinguish contours.
+} Hist2DOpt;
 
 #endif

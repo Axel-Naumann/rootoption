@@ -9,26 +9,30 @@
 #include "Options.h"
 
 // two example functions
-void takesOptions(OptionSet<SomeOptions_t> opt);
-void takesDOptions(OptionSet<DerivedOptions_t> opt);
+void draw1DHist(OptionSet<Hist1DOpt_t> opt);
+void draw2DHist(OptionSet<Hist2DOpt_t> opt);
 
 int main(int argc, const char * argv[])
 {
    // works and should work.
-   takesOptions(SomeOptions.Option1);
-   takesOptions(SomeOptions.Option1 + SomeOptions.Option3);
+   draw1DHist(Hist1DOpt.Same);
+   draw1DHist(Hist1DOpt.Bar3D);
+   draw1DHist(Hist1DOpt.ErrorT + Hist1DOpt.Same);
    // shouldn't work.
-   takesOptions(SomeOptions.Option1 + DerivedOptions.Option3);
+   draw1DHist(Hist2DOpt.Same);
    // shouldn't work.
-   takesOptions(DerivedOptions.Option1D + DerivedOptions.Option3);
+   draw1DHist(Hist1DOpt.Bar + Hist2DOpt.Box);
    // shouldn't work.
-   takesOptions(DifferentOptions.Option1DD);
+   draw1DHist(Hist2DOpt.Box + Hist1DOpt.Arrow);
 
    // works and should work.
-   takesDOptions(DerivedOptions.Option1D + DerivedOptions.Option3D);
+   draw2DHist(Hist2DOpt.Box + Hist2DOpt.Arrow);
    // works and should work.
-   takesDOptions(DerivedOptions.Option1D + DerivedOptions.Option3);
-
+   draw2DHist(Hist2DOpt.Arrow + Hist2DOpt.Same);
+   // shouldn't work.
+   draw2DHist(Hist1DOpt.Same);
+   // shouldn't work.
+   draw2DHist(Hist2DOpt.Box + Hist1DOpt.Same);
    return 0;
 }
 
