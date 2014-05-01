@@ -15,18 +15,19 @@ void takesDOptions(OptionSet<DerivedOptions_t> opt);
 int main(int argc, const char * argv[])
 {
    // works and should work.
+   takesOptions(SomeOptions.Option1);
    takesOptions(SomeOptions.Option1 + SomeOptions.Option3);
-   // works but should NOT work!
+   // shouldn't work.
    takesOptions(SomeOptions.Option1 + DerivedOptions.Option3);
-   // doesn't work and shouldn't work.
+   // shouldn't work.
    takesOptions(DerivedOptions.Option1D + DerivedOptions.Option3);
-   // doesn't work and shouldn't work.
+   // shouldn't work.
    takesOptions(DifferentOptions.Option1DD);
 
    // works and should work.
    takesDOptions(DerivedOptions.Option1D + DerivedOptions.Option3D);
-   // doesn't work but SHOULD work!
-   takesDOptions(DerivedOptions.Option1D + SomeOptions.Option3);
+   // works and should work.
+   takesDOptions(DerivedOptions.Option1D + DerivedOptions.Option3);
 
    return 0;
 }
