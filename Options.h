@@ -9,21 +9,22 @@
 #ifndef OptionTest_Options_h
 #define OptionTest_Options_h
 
-template <typename OPTIONKIND>
+template <typename OPTIONGROUP>
 struct Option;
 
 // A combination of Option-s.
-template <typename OPTIONKIND>
+template <typename OPTIONGROUP>
 struct OptionSet {
-   typedef Option<OPTIONKIND> Option_t;
+   typedef Option<OPTIONGROUP> Option_t;
    OptionSet() = default;
    OptionSet(Option_t); // build from single option
 };
 
 // An Option.
-template <typename OPTIONKIND>
+template <typename OPTIONGROUP>
 struct Option {
    Option(const char* val);
+   OptionSet<OPTIONGROUP> operator+(Option<OPTIONGROUP> one) const;
 };
 
 // Combining options into an OptionSet.
